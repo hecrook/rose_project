@@ -20,11 +20,17 @@ sampleid=$(basename $vcf | grep -oP '^[^_]+_[^_]+_[^_]+')
 bam="$BASE_DIR/data/clean/bam/${sampleid}.bam"
 
 mkdir -p ${BASE_DIR}/results/sobdetector
-output="${BASE_DIR}/results/sobdetector/${sampleid}.sobdetector.hcfiltered.adrlar.mutect2.filtered.vcf"
+output="${BASE_DIR}/results/sobdetector/${sampleid}.sobdetector.hcfiltered.adrlar.mutect2.filtered"
 
 java -jar $SOBDetector \
     --input-type VCF \
     --input-variants $vcf \
     --input-bam $bam \
-    --output-variants $output \
+    --output-variants ${output}.vcf \
     --only-passed true
+
+# pull all SNV variants from the filtered vcf
+mamba deactivate
+mamba activate bcftools
+
+grep -v "artiStatus=artifact" ${output}.vcf > ${output}.snvsonly.vcf

@@ -16,4 +16,4 @@ vcfs=($BASE_DIR/results/filter_vcf/*)
 
 echo "running script on the following files: " ${vcfs[@]}
 
-srun bash sobdetector.sh ${vcfs[$SLURM_ARRAY_TASK_ID]}
+srun bash ${BASE_DIR}/bin/sobdetector.sh ${vcfs[$SLURM_ARRAY_TASK_ID]}

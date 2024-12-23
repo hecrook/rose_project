@@ -30,3 +30,6 @@ for dir in $tumour_dirs ; do
         echo "Running sample " $name ", VCF file (" $file ") through python script to filter VCF. Output will be published in " $output
         python3 bin/filter_mutect2_HC2.py $file $output
 done
+
+# end of script
+echo "All tumour VCFs have been filtered through filter_mutect2_HC.py script. Check results in /results/filter_vcf/ directory."

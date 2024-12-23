@@ -10,6 +10,6 @@
 
 # Specify samples to be run through script (to filter out genomic germline gnomad variants)
 BASE_DIR=$(dirname `pwd`)
-vcfs=($BASE_DIR/results/filter_vcf/*)
+vcfs=($BASE_DIR/results/sobdetector/*)
 
 srun bash soprano.sh ${vcfs[$SLURM_ARRAY_TASK_ID]}
