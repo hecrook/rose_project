@@ -16,7 +16,7 @@ mamba activate samtools
 
 # define bam and cram files
 cram=$1
-bam=$(basename $cram | grep -oP '^[^.]*').bam
+bam=$(basename $cram | grep -oP '^[^_]+_[^_]+').bam
 fasta="${BASE_DIR}/data/reference/Homo_sapiens_assembly38.fasta"
 
 # CONVERT

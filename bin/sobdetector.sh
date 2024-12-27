@@ -16,7 +16,7 @@ mamba activate samtools
 # Defining variables - sample specific sample file and bam file
 ####### INPUT SHOULD BE LS OF FILTER_VCF DIR
 vcf=$1
-sampleid=$(basename $vcf | grep -oP '^[^_]+_[^_]+_[^_]+')
+sampleid=$(basename $vcf | grep -oP '^[^_]+_[^_]+')
 bam="$BASE_DIR/data/clean/bam/${sampleid}.bam"
 
 mkdir -p ${BASE_DIR}/results/sobdetector
