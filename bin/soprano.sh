@@ -15,9 +15,14 @@ mamba activate soprano
 
 # set variables
 vcf=$1
-sampleid=$(basename $vcf | grep -oP '^[^_]+_[^_]+_[^_]+')
-annot=$(basename $vcf | grep -oP '^[^.]*').sopranoannotated.hcfiltered.adrlar.mutect2.filtered
-hlafile="${BASE_DIR}/results/optitype/${sampleid}_T1_result.tsv"
+sampleid=$(basename $vcf | grep -oP '^[^.]+')
+annot=$(basename $vcf | grep -oP '.*(?=\.vcf$)').sopranoannotated
+
+# if else statement to set hla type (in case any samples don't have a matched germline, use hlatype from tumour sample)
+hlafile="${BASE_DIR}/results/optitype/${sampleid}_Germline_T1_result.tsv"
+[[ -f "$hlafile" ]] || hlafile="${BASE_DIR}/results/optitype/${sampleid}_FFPE_T1_result.tsv"
+[[ -f "$hlafile" ]] || hlafile="${BASE_DIR}/results/optitype/${sampleid}_Cysectomy_T1_result.tsv"
+
 hlas=$(sed -n '2p' $hlafile | cut -d$'\t' -f2-7 | tr -d '*:')
 impep="${BASE_DIR}/results/soprano/immunopeptidomes/${sampleid}.sopranoimmunopeptidome.bed"
 

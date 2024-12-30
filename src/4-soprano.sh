@@ -8,8 +8,8 @@
 #SBATCH --mail-user=hannah.crook@icr.ac.uk
 #SBATCH --mail-type=ALL
 
-# Specify samples to be run through script (to filter out genomic germline gnomad variants)
+# Specify samples to be run through script
 BASE_DIR=$(dirname `pwd`)
-vcfs=($BASE_DIR/results/sobdetector/*)
+vcfs=($BASE_DIR/results/sobdetector/*snvsonly*)
 
-srun bash soprano.sh ${vcfs[$SLURM_ARRAY_TASK_ID]}
+srun bash ${BASE_DIR}/bin/soprano.sh ${vcfs[$SLURM_ARRAY_TASK_ID]}
