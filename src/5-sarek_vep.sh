@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --job-name=vep-annotate
-#SBATCH --partition=compute
+#SBATCH --partition=master-worker
 #SBATCH --ntasks=1
-#SBATCH --time=2:00:00
-#SBATCH --mem-per-cpu=1000
+#SBATCH --time=50:00:00
+#SBATCH --mem-per-cpu=4021
 #SBATCH --mail-user=hannah.crook@icr.ac.uk
 #SBATCH --mail-type=ALL
 
