@@ -14,7 +14,7 @@ srun nextflow run nf-core/sarek --input ${BASE_DIR}/docs/sarek_annotate/samplesh
 --genome GATK.GRCh38 \
 --step annotate \
 --tools vep \
---vep_custom_args "--vcf --everything --filter_common --per_gene --total_length --offline --format vcf --pick" \
+--vep_custom_args "--vcf --everything --filter_common --per_gene --total_length --offline --format vcf --pick --symbol --terms SO --tsl --biotype --hgvs --plugin Frameshift --plugin Wildtype" \
 -profile singularity \
 -c ${BASE_DIR}/docs/sarek_annotate/ICR.config \
 -r 3.4.0
