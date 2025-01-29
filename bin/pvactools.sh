@@ -33,6 +33,6 @@ pvacseq run \
 $vcf \
 $vcfsampleid \
 $hlas \
-NetMHCpan NetMHC NetMHCcons PickPocket SMM SMMPMBEC MHCflurry MHCnuggetsI \
+NetMHCpan NetMHC PickPocket SMM SMMPMBEC MHCflurry MHCnuggetsI \
 ${BASE_DIR}/results/pvacseq/${sampleid}/ \
 --iedb-install-directory ${BASE_DIR}/tools/iedb_binding_prediction_tools/ 
