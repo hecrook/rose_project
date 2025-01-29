@@ -26,6 +26,7 @@ singularity exec --bind $SCRATCH:$SCRATCH $vep_sif \
     --force_overwrite \
     --format vcf \
     --vcf \
+    --compress_output gzip\
     --symbol \
     --terms SO \
     --tsl \
