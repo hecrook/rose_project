@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --job-name=ROSE-5-pvactools
 #SBATCH --partition=compute
-#SBATCH --ntasks=1
+#SBATCH --ntasks=2
 #SBATCH --time=12:00:00
-#SBATCH --mem-per-cpu=1000
+#SBATCH --mem-per-cpu=2000
 #SBATCH --mail-user=hannah.crook@icr.ac.uk
 #SBATCH --mail-type=ALL
 
@@ -33,6 +33,6 @@ pvacseq run \
 $vcf \
 $vcfsampleid \
 $hlas \
-NetMHCpan NetMHC PickPocket MHCflurry MHCnuggetsI \
+NetMHCpan NetMHC NetMHCcons NetMHCpan PickPocket SMM SMMPMBEC SMMalign \
 ${BASE_DIR}/results/pvacseq2/${sampleid}/ \
 --iedb-install-directory ${BASE_DIR}/tools/iedb_binding_prediction_tools/ 
