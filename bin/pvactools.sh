@@ -11,12 +11,12 @@ BASE_DIR=$(dirname `pwd`)
 source ~/.bashrc
 
 module load Mamba
-mamba activate pVACtools
+mamba activate pvacseq2
 
 # Input is the VCF file that has been filtered and annotated with VEP. 
 
 # make output directory
-mkdir -p ${BASE_DIR}/results/pvacseq
+mkdir -p ${BASE_DIR}/results/pvacseq2
 
 # set variables
 tumour_dir=$1
@@ -26,13 +26,13 @@ hlafile="${BASE_DIR}/results/optitype/${sampleid}_Germline_T1_result.tsv"
 [[ -f "$hlafile" ]] || hlafile="${BASE_DIR}/results/optitype/${sampleid}_Cysectomy_T1_result.tsv"
 hlas=$(sed -n '2p' "$hlafile" | cut -d$'\t' -f2-7 | sed -E 's/[[:space:]]+/,/g; s/(^|,)/\1HLA-/g')
 vcf="${tumour_dir}/*.vcf.gz"
-vcfsampleid=$(zgrep "#CHROM" $vcf | cut -f10)
+vcfsampleid=$(zgrep "##tumor_sample=" $vcf | sed -e "s/^##tumor_sample=//")
 
 # run pvacseq
 pvacseq run \
 $vcf \
 $vcfsampleid \
 $hlas \
-NetMHCpan NetMHC PickPocket SMM SMMPMBEC MHCflurry MHCnuggetsI \
-${BASE_DIR}/results/pvacseq/${sampleid}/ \
+NetMHCpan NetMHC PickPocket MHCflurry MHCnuggetsI \
+${BASE_DIR}/results/pvacseq2/${sampleid}/ \
 --iedb-install-directory ${BASE_DIR}/tools/iedb_binding_prediction_tools/ 
