@@ -10,15 +10,17 @@
 BASE_DIR=$(dirname `pwd`)
 source ~/.bashrc
 
-module load Mamba
-mamba activate pvacseq2
-
 # Input is the VCF file that has been filtered and annotated with VEP. 
 
 # make output directory
-mkdir -p ${BASE_DIR}/results/pvacseq2
+if [ -d "${BASE_DIR}/results/pvacseq2" ]; then
+    rm -r ${BASE_DIR}/results/pvacseq2
+else
+    mkdir -p ${BASE_DIR}/results/pvacseq2
+fi
 
 # set variables
+pvac_sif="${BASE_DIR}/tools/sifs/pVACtools_4.1.1.sif"
 tumour_dir=$1
 sampleid=$(basename $tumour_dir)
 hlafile="${BASE_DIR}/results/optitype/${sampleid}_Germline_T1_result.tsv"
@@ -29,10 +31,11 @@ vcf="${tumour_dir}/*.vcf.gz"
 vcfsampleid=$(zgrep "##tumor_sample=" $vcf | sed -e "s/^##tumor_sample=//")
 
 # run pvacseq
+singularity exec --bind $BASE_DIR::$BASE_DIR $pvac_sif \
 pvacseq run \
 $vcf \
 $vcfsampleid \
 $hlas \
-NetMHCpan NetMHC NetMHCcons NetMHCpan PickPocket SMM SMMPMBEC SMMalign \
+NetMHCpan NetMHCpanEL NetMHCIIpan NetMHCIIpanEL DeepImmuno \
 ${BASE_DIR}/results/pvacseq2/${sampleid}/ \
 --iedb-install-directory ${BASE_DIR}/tools/iedb_binding_prediction_tools/ 
