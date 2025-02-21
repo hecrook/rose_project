@@ -18,7 +18,7 @@ source ~/.bashrc
 pvac_sif="${BASE_DIR}/tools/sifs/pVACtools_4.1.1.sif"
 vcf="${1}/*.vcf.gz"
 vcfsampleid=$(zgrep "##tumor_sample=" $vcf | sed -e "s/^##tumor_sample=//")
-exp_tsv="${BASE_DIR}/data/clean/expression/ComBatSeq/"
+exp_tsv="${BASE_DIR}/data/clean/expression/ComBatSeq/counts_ComBatSeq_corrected_with_covariates_response_and_trial.tsv"
 output=$(basename $vcf .vcf.gz).gx.vcf
 
 # creating samplename that matches the column names in the expression tsv. Using the directory name of vep_annotate as a base --> cml input to this script
@@ -38,6 +38,7 @@ fi
 # make output directory - forced overwrite of any previous runs
 if [ -d "${BASE_DIR}/results/vcf_expression_annotator/${base_name}" ]; then
     rm -r ${BASE_DIR}/results/vcf_expression_annotator/${base_name}
+    mkdir -p ${BASE_DIR}/results/vcf_expression_annotator/${base_name}
 else
     mkdir -p ${BASE_DIR}/results/vcf_expression_annotator/${base_name}
 fi
@@ -48,6 +49,9 @@ vcf-expression-annotator \
 -i gene_ids \
 -e $sampleid \
 -s $vcfsampleid \
--o ${BASE_DIR}/results/vcf_expression_annotator/${base_name}/${output}
-
-
+-o ${BASE_DIR}/results/vcf_expression_annotator/${base_name}/${output} \
+--ignore-ensembl-id-version \
+$vcf \
+$exp_tsv \
+custom \
+gene
