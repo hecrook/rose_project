@@ -8,14 +8,15 @@
 #SBATCH --mail-type=ALL
 
 BASE_DIR=$(dirname $(pwd))
-SCRATCH="/data/scratch/DMP/UCEC/EVOLIMMU/hcrook/"
-vep_sif="$SCRATCH/tools/singularity_images/vep/vep.sif"
+source ~/.bashrc
+
+vep_sif="$SCRATCH/tools/singularity_images/vep/vep109.sif"
 input_file=$(echo $1 | cut -d'/' -f8-)
 sampleid=$(basename $1 | grep -oP '^[^.]+')
 output_file=$(basename $input_file .vcf)_VEP.ann.vcf.gz
 
 # Make output directory
-mkdir -p $SCRATCH/rose_project/results/vep_annotate2/$sampleid/
+mkdir -p $SCRATCH/rose_project/results/vep_annotate/$sampleid/
 
 # trying local download of vep singulairty image instead
 singularity exec --bind $SCRATCH:$SCRATCH $vep_sif \
@@ -23,6 +24,7 @@ singularity exec --bind $SCRATCH:$SCRATCH $vep_sif \
     --dir $SCRATCH/tools/singularity_images/vep/vep_data \
     --dir_cache $SCRATCH/tools/singularity_images/vep/vep_data \
     --dir_plugins $SCRATCH/tools/singularity_images/vep/plugins/VEP_plugins \
+    --cache_version 109 \
     --force_overwrite \
     --format vcf \
     --vcf \
@@ -32,11 +34,11 @@ singularity exec --bind $SCRATCH:$SCRATCH $vep_sif \
     --tsl \
     --biotype \
     --hgvs \
-    --fasta /data/scratch/DMP/UCEC/EVOLIMMU/hcrook/tools/singularity_images/vep/vep_data/homo_sapiens/113_GRCh38/Homo_sapiens.GRCh38.dna.toplevel.fa.gz \
+    --fasta $SCRATCH/tools/singularity_images/vep/vep_data/homo_sapiens/113_GRCh38/Homo_sapiens.GRCh38.dna.toplevel.fa.gz \
     --cache \
     --plugin Frameshift \
     --plugin Wildtype \
     --input_file $SCRATCH/$input_file \
-    --output_file $SCRATCH/rose_project/results/vep_annotate2/$sampleid/$output_file \
+    --output_file $SCRATCH/rose_project/results/vep_annotate/$sampleid/$output_file \
     --pick \
     --safe
