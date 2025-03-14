@@ -12,13 +12,6 @@ source ~/.bashrc
 
 # Input is the VCF file that has been filtered and annotated with VEP. 
 
-# make output directory
-if [ -d "${BASE_DIR}/results/pvacseq2" ]; then
-    rm -r ${BASE_DIR}/results/pvacseq2
-else
-    mkdir -p ${BASE_DIR}/results/pvacseq2
-fi
-
 # set variables
 pvac_sif="${BASE_DIR}/tools/sifs/pVACtools_4.1.1.sif"
 tumour_dir=$1
@@ -27,8 +20,23 @@ hlafile="${BASE_DIR}/results/optitype/${sampleid}_Germline_T1_result.tsv"
 [[ -f "$hlafile" ]] || hlafile="${BASE_DIR}/results/optitype/${sampleid}_FFPE_T1_result.tsv"
 [[ -f "$hlafile" ]] || hlafile="${BASE_DIR}/results/optitype/${sampleid}_Cysectomy_T1_result.tsv"
 hlas=$(sed -n '2p' "$hlafile" | cut -d$'\t' -f2-7 | sed -E 's/[[:space:]]+/,/g; s/(^|,)/\1HLA-/g')
-vcf="${tumour_dir}/*.vcf.gz"
+vcf="${tumour_dir}/*.vcf"
 vcfsampleid=$(zgrep "##tumor_sample=" $vcf | sed -e "s/^##tumor_sample=//")
+
+# Printing sample name for log (and vcf for troubleshooting)
+echo "Running pvacseq on $sampleid"
+echo "VCF file: $vcf"
+echo "HLA alleles: $hlas"
+
+# make output directory
+if [ -d "${BASE_DIR}/results/pvacseq_expression/${sampleid}/" ]; then
+    echo "Previous run detected, deleting previous results"
+    rm -r ${BASE_DIR}/results/pvacseq_expression/${sampleid}/
+    mkdir -p ${BASE_DIR}/results/pvacseq_expression/${sampleid}/
+else
+    echo "Output directory does not exist, creating"
+    mkdir -p ${BASE_DIR}/results/pvacseq_expression/${sampleid}/
+fi
 
 # run pvacseq
 singularity exec --bind $BASE_DIR::$BASE_DIR $pvac_sif \
@@ -36,6 +44,6 @@ pvacseq run \
 $vcf \
 $vcfsampleid \
 $hlas \
-NetMHCpan NetMHCpanEL NetMHCIIpan NetMHCIIpanEL DeepImmuno \
-${BASE_DIR}/results/pvacseq2/${sampleid}/ \
+NetMHCpan NetMHCpanEL PickPocket SMM SMMPMBEC BigMHC_EL \
+${BASE_DIR}/results/pvacseq_expression/${sampleid}/ \
 --iedb-install-directory ${BASE_DIR}/tools/iedb_binding_prediction_tools/ 

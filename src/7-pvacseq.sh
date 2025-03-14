@@ -10,6 +10,6 @@
 
 # Script to run all samples through pvacseq. The input are the vep annotated, fully filtered VCF files. The script pulls these from the directory
 BASE_DIR=$(dirname `pwd`)
-tumour_dirs=($BASE_DIR/results/vep_annotate2/*)
+tumour_dirs=($BASE_DIR/results/vcf_expression_annotator/*)
 
 srun bash ${BASE_DIR}/bin/pvactools.sh ${tumour_dirs[$SLURM_ARRAY_TASK_ID]}
