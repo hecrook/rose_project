@@ -46,4 +46,4 @@ $vcfsampleid \
 $hlas \
 NetMHCpan NetMHC NetMHCcons NetMHCpanEL PickPocket SMM SMMPMBEC BigMHC_EL BigMHC_IM DeepImmuno\
 ${BASE_DIR}/results/pvacseq_expression_sif2/${sampleid}/ \
---iedb-install-directory ${BASE_DIR}/tools/iedb_binding_prediction_tools/ 
+--iedb-install-directory /opt/iedb
