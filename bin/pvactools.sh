@@ -13,7 +13,7 @@ source ~/.bashrc
 # Input is the VCF file that has been filtered and annotated with VEP. 
 
 # set variables
-pvac_sif="${BASE_DIR}/tools/sifs/pVACtools_4.1.1.sif"
+pvac_sif="/data/scratch/shared/SINGULARITY-DOWNLOAD/tools/.singularity/pvactools_latest.sif"
 tumour_dir=$1
 sampleid=$(basename $tumour_dir)
 hlafile="${BASE_DIR}/results/optitype/${sampleid}_Germline_T1_result.tsv"
@@ -29,13 +29,13 @@ echo "VCF file: $vcf"
 echo "HLA alleles: $hlas"
 
 # make output directory
-if [ -d "${BASE_DIR}/results/pvacseq_expression/${sampleid}/" ]; then
+if [ -d "${BASE_DIR}/results/pvacseq_expression_sif2/${sampleid}/" ]; then
     echo "Previous run detected, deleting previous results"
-    rm -r ${BASE_DIR}/results/pvacseq_expression/${sampleid}/
-    mkdir -p ${BASE_DIR}/results/pvacseq_expression/${sampleid}/
+    rm -r ${BASE_DIR}/results/pvacseq_expression_sif2/${sampleid}/
+    mkdir -p ${BASE_DIR}/results/pvacseq_expression_sif2/${sampleid}/
 else
     echo "Output directory does not exist, creating"
-    mkdir -p ${BASE_DIR}/results/pvacseq_expression/${sampleid}/
+    mkdir -p ${BASE_DIR}/results/pvacseq_expression_sif2/${sampleid}/
 fi
 
 # run pvacseq
@@ -44,6 +44,6 @@ pvacseq run \
 $vcf \
 $vcfsampleid \
 $hlas \
-NetMHCpan NetMHCpanEL PickPocket SMM SMMPMBEC BigMHC_EL \
-${BASE_DIR}/results/pvacseq_expression/${sampleid}/ \
+NetMHCpan NetMHC NetMHCcons NetMHCpanEL PickPocket SMM SMMPMBEC BigMHC_EL BigMHC_IM DeepImmuno\
+${BASE_DIR}/results/pvacseq_expression_sif2/${sampleid}/ \
 --iedb-install-directory ${BASE_DIR}/tools/iedb_binding_prediction_tools/ 

@@ -12,4 +12,4 @@
 BASE_DIR=$(dirname `pwd`)
 tumour_dirs=($BASE_DIR/results/vcf_expression_annotator/*)
 
-srun bash ${BASE_DIR}/bin/pvactools.sh ${tumour_dirs[$SLURM_ARRAY_TASK_ID]}
+srun bash ${BASE_DIR}/bin/pvactools.sh ${tumour_dirs[$SLURM_ARRAY_TASK_ID]} 

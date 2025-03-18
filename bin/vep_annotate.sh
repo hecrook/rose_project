@@ -34,7 +34,7 @@ singularity exec --bind $SCRATCH:$SCRATCH $vep_sif \
     --tsl \
     --biotype \
     --hgvs \
-    --fasta $SCRATCH/tools/singularity_images/vep/vep_data/homo_sapiens/113_GRCh38/Homo_sapiens.GRCh38.dna.toplevel.fa.gz \
+    --fasta $SCRATCH/tools/singularity_images/vep/vep_data/homo_sapiens/109_GRCh38/Homo_sapiens.GRCh38.dna.toplevel.fa.gz \
     --cache \
     --plugin Frameshift \
     --plugin Wildtype \
