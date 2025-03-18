@@ -4,7 +4,7 @@
 #SBATCH --ntasks=1
 #SBATCH --mem-per-cpu=16000
 #SBATCH --time=12:00:00
-#SBATCH --array=0-2
+#SBATCH --array=0-3
 #SBATCH --mail-user=hannah.crook@icr.ac.uk
 #SBATCH --mail-type=ALL
 

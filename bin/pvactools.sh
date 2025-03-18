@@ -20,22 +20,32 @@ hlafile="${BASE_DIR}/results/optitype/${sampleid}_Germline_T1_result.tsv"
 [[ -f "$hlafile" ]] || hlafile="${BASE_DIR}/results/optitype/${sampleid}_FFPE_T1_result.tsv"
 [[ -f "$hlafile" ]] || hlafile="${BASE_DIR}/results/optitype/${sampleid}_Cysectomy_T1_result.tsv"
 hlas=$(sed -n '2p' "$hlafile" | cut -d$'\t' -f2-7 | sed -E 's/[[:space:]]+/,/g; s/(^|,)/\1HLA-/g')
+
+# Setting VCF file if not compressed
 vcf="${tumour_dir}/*.vcf"
-vcfsampleid=$(zgrep "##tumor_sample=" $vcf | sed -e "s/^##tumor_sample=//")
+
+# Setting VCF file if it is compressed
+[[ -f "$vcf" ]] || vcf="${tumour_dir}/*.vcf.gz"
+if [[ "$vcf" == *.gz ]]; then
+    gunzip $vcf
+    vcf="${vcf%.gz}"  # Update variable to reflect the uncompressed filename
+fi
+
+vcfsampleid=$(grep "##tumor_sample=" $vcf | sed -e "s/^##tumor_sample=//")
 
 # Printing sample name for log (and vcf for troubleshooting)
 echo "Running pvacseq on $sampleid"
-echo "VCF file: $vcf"
+echo "VCF file:" $vcf
 echo "HLA alleles: $hlas"
 
 # make output directory
 if [ -d "${BASE_DIR}/results/pvacseq_expression_sif2/${sampleid}/" ]; then
     echo "Previous run detected, deleting previous results"
-    rm -r ${BASE_DIR}/results/pvacseq_expression_sif2/${sampleid}/
-    mkdir -p ${BASE_DIR}/results/pvacseq_expression_sif2/${sampleid}/
+    rm -r ${BASE_DIR}/results/pvacseq_expression_sif2/$sampleid/
+    mkdir -p ${BASE_DIR}/results/pvacseq_expression_sif2/$sampleid/
 else
     echo "Output directory does not exist, creating"
-    mkdir -p ${BASE_DIR}/results/pvacseq_expression_sif2/${sampleid}/
+    mkdir -p ${BASE_DIR}/results/pvacseq_expression_sif2/$sampleid/
 fi
 
 # run pvacseq
@@ -44,6 +54,6 @@ pvacseq run \
 $vcf \
 $vcfsampleid \
 $hlas \
-NetMHCpan NetMHC NetMHCcons NetMHCpanEL PickPocket SMM SMMPMBEC BigMHC_EL BigMHC_IM DeepImmuno\
+NetMHCpan NetMHC NetMHCcons NetMHCpanEL PickPocket SMM SMMPMBEC BigMHC_EL BigMHC_IM DeepImmuno \
 ${BASE_DIR}/results/pvacseq_expression_sif2/${sampleid}/ \
 --iedb-install-directory /opt/iedb
