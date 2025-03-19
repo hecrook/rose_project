@@ -2,7 +2,7 @@
 #SBATCH --job-name=ROSE-5-pvactools
 #SBATCH --partition=compute
 #SBATCH --ntasks=2
-#SBATCH --time=12:00:00
+#SBATCH --time=72:00:00
 #SBATCH --mem-per-cpu=2000
 #SBATCH --mail-user=hannah.crook@icr.ac.uk
 #SBATCH --mail-type=ALL
