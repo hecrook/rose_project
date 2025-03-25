@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --job-name=ROSE-5-pvactools
-#SBATCH --partition=compute
+#SBATCH --partition=smp
 #SBATCH --ntasks=2
 #SBATCH --time=72:00:00
-#SBATCH --mem-per-cpu=2000
+#SBATCH --mem-per-cpu=16000
 #SBATCH --mail-user=hannah.crook@icr.ac.uk
 #SBATCH --mail-type=ALL
 
@@ -39,14 +39,14 @@ echo "VCF file:" $vcf
 echo "HLA alleles: $hlas"
 
 # make output directory
-if [ -d "${BASE_DIR}/results/pvacseq_expression_sif2/${sampleid}/" ]; then
-    echo "Previous run detected, deleting previous results"
-    rm -r ${BASE_DIR}/results/pvacseq_expression_sif2/$sampleid/
-    mkdir -p ${BASE_DIR}/results/pvacseq_expression_sif2/$sampleid/
-else
-    echo "Output directory does not exist, creating"
-    mkdir -p ${BASE_DIR}/results/pvacseq_expression_sif2/$sampleid/
-fi
+# if [ -d "${BASE_DIR}/results/pvacseq_expression_sif2/${sampleid}/" ]; then
+#     echo "Previous run detected, deleting previous results"
+#     rm -r ${BASE_DIR}/results/pvacseq_expression_sif2/$sampleid/
+#     mkdir -p ${BASE_DIR}/results/pvacseq_expression_sif2/$sampleid/
+# else
+#     echo "Output directory does not exist, creating"
+#     mkdir -p ${BASE_DIR}/results/pvacseq_expression_sif2/$sampleid/
+# fi
 
 # run pvacseq
 singularity exec --bind $BASE_DIR::$BASE_DIR $pvac_sif \
